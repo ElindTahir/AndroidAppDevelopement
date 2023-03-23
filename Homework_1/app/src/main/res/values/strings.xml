@@ -5,5 +5,9 @@
     <string name="second_number">Second Number</string>
     <string name="calculate">Calculate</string>
     <string name="plus">+</string>
+    <string name="result">Result</string>
+    <string name="navigate">Navigate</string>
+    <string name="_0">0</string>
+    <string name="_50">50</string>
 </resources>
 

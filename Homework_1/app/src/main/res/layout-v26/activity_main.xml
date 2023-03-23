@@ -40,7 +40,7 @@
             android:id="@+id/firstNumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/_0" />
+            android:hint="@string/first_number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -64,7 +64,7 @@
             android:id="@+id/secondNumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/_0" />
+            android:hint="@string/second_number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -82,7 +82,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="@string/_0"
+        android:text="@string/result"
         android:textColor="#000000"
         android:textSize="22sp" />
 
@@ -106,10 +106,9 @@
         android:id="@+id/seekBar"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content" 
         android:min="0"
-        android:max="100"
-        android:progress="0"/>
+        android:max="100"/>
 
     <TextView
         android:id="@+id/seekbarNumber"
@@ -120,7 +119,7 @@
         android:layout_marginRight="20dp"
         android:textColor="#000000"
         android:textSize="22sp"
-        android:text="@string/_0" />
+        android:text="@string/_50" />
 
 
 
