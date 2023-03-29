@@ -20,3 +20,4 @@ class SecondActivity : AppCompatActivity() {
         resultSecond.text = resultFromMainActivity.toString()
     }
 }
+

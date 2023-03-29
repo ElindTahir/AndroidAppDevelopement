@@ -29,7 +29,9 @@ class MainActivity : AppCompatActivity() {
     val calcButton = findViewById<Button>(R.id.calcButton)
     val navButton = findViewById<Button>(R.id.navButton)
 
+    //Task 4 Calculation
     calcButton.setOnClickListener {
+
         val numberOne = firstNumber.text.toString().toIntOrNull() ?: 0
         val numberTwo = secondNumber.text.toString().toIntOrNull() ?: 0
 
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         result.text = sumOfTwoNumbers.toString()
     }
 
+    //Task 5 Navigation
     navButton.setOnClickListener {
         val numberOne = firstNumber.text.toString().toIntOrNull() ?: 0
         val numberTwo = secondNumber.text.toString().toIntOrNull() ?: 0
@@ -48,17 +51,18 @@ class MainActivity : AppCompatActivity() {
         startActivity(secondActivityIntent)
     }
 
+    //Task 6 Seekbar
     seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
             seekBarNumber.text = p1.toString()
         }
 
         override fun onStartTrackingTouch(p0: SeekBar?) {
-
+        //Empty --> No need!
         }
 
         override fun onStopTrackingTouch(p0: SeekBar?) {
-
+        //Empty --> No need!
         }
 
     })
