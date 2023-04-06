@@ -23,7 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
-            android:text="@string/textview2"
+            android:text=""
             android:id="@+id/CardsView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
