@@ -1,5 +1,6 @@
 package com.example.homework_2.data
 
+
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -8,7 +9,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class DownloadJson {
-    public suspend fun downloadJsonData(page: Int = 1): List<Card> = withContext(Dispatchers.IO) {
+    suspend fun downloadJsonData(page: Int = 1): List<Card> = withContext(Dispatchers.IO) {
         val url = URL("https://api.magicthegathering.io/v1/cards?page=$page")
         val connection = url.openConnection() as HttpURLConnection
         connection.requestMethod = "GET"
@@ -20,7 +21,7 @@ class DownloadJson {
             val cardsJson = JSONObject(jsonString).getJSONArray("cards")
             val cards = mutableListOf<Card>()
 
-            for(i in 0 until cardsJson.length()) {
+            for (i in 0 until cardsJson.length()) {
                 val cardJson = cardsJson.getJSONObject(i)
                 val colorsJson = cardJson.optJSONArray("colors")
                 val colors = if (colorsJson != null) {
@@ -41,8 +42,10 @@ class DownloadJson {
 
             return@withContext cards
 
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             Log.e("MainActivity", "Error downloading JSON data: ${e.message}")
+            withContext(Dispatchers.Main) {
+            }
             return@withContext emptyList<Card>()
         } finally {
             connection.disconnect()
@@ -53,7 +56,3 @@ class DownloadJson {
         cards.sortWith(compareBy { it.name })
     }
 }
-
-
-
-

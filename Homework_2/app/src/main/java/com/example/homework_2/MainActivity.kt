@@ -8,10 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.homework_2.data.Card
 import com.example.homework_2.data.DownloadJson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.lang.Exception
 import java.net.HttpURLConnection
@@ -31,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         private const val _Page = "page"
     }
 
-    @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -47,30 +43,35 @@ class MainActivity : AppCompatActivity() {
         }
 
         loadCardsButton.setOnClickListener {
-            CardView.text = "loading..."
+            CardView.text = getString(R.string.Loading)
             loadCardsButton.isEnabled = false
 
             //Loading Cards...
 
             CoroutineScope(Dispatchers.Main).launch {
-                val cards = withContext(Dispatchers.IO) {
-                    DownloadJson().downloadJsonData(currentPage)
-                }
-
-                if (cards.isEmpty()) {
-                    currentPage = 1
-                    val firstPageCards = withContext(Dispatchers.IO) {
+                try {
+                    val cards = withContext(Dispatchers.IO) {
                         DownloadJson().downloadJsonData(currentPage)
                     }
-                    Log.e("LoadCardsEmpty", "page $currentPage")
-                    showCards(firstPageCards.toMutableList() as ArrayList<Card>)
-                } else {
-                    Log.e("LoadCardsNotEmpty", "page $currentPage")
-                    showCards(cards.toMutableList() as ArrayList<Card>)
-                }
 
-                currentPage++
-                loadCardsButton.isEnabled = true
+                    if (cards.isEmpty()) {
+                        currentPage = 1
+                        val firstPageCards = withContext(Dispatchers.IO) {
+                            DownloadJson().downloadJsonData(currentPage)
+                        }
+                        Log.e("LoadCardsEmpty", "page $currentPage")
+                        showCards(firstPageCards.toMutableList() as ArrayList<Card>)
+                    } else {
+                        Log.e("LoadCardsNotEmpty", "page $currentPage")
+                        showCards(cards.toMutableList() as ArrayList<Card>)
+                    }
+
+                    currentPage++
+                    loadCardsButton.isEnabled = true
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Error loading cards: ${e.message}")
+                    showError()
+                }
             }
         }
     }
@@ -87,17 +88,20 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-        @SuppressLint("SetTextI18n")
-        private fun showCards(cards: ArrayList<Card>?) {
-            if (cards != null && cards.isNotEmpty()) {
-                this.cards = cards
-                val cardNames = cards.joinToString(separator = "\n") {
-                    "${it.name} - ${it.colors.joinToString()}"
-                }
-                CardView.text = cardNames
-            } else {
-                CardView.text = "No cards found"
+    private fun showCards(cards: ArrayList<Card>?) {
+        if (cards != null && cards.isNotEmpty()) {
+            this.cards = cards
+            val cardNames = cards.joinToString(separator = "\n") {
+                "${it.name} - ${it.colors.joinToString()}"
             }
+            CardView.text = cardNames
+        } else {
+            CardView.text = getString(R.string.NoCardsFound)
         }
-}
+    }
 
+    private fun showError() {
+        CardView.text = getString(R.string.Error)
+        loadCardsButton.isEnabled = true
+    }
+}
