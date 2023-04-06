@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var loadCardsButton: Button
     private lateinit var CardView: TextView
 
+    private var currentPage = 1
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,14 +42,35 @@ class MainActivity : AppCompatActivity() {
 
             CoroutineScope(Dispatchers.Main).launch {
                 val cards = withContext(Dispatchers.IO) {
-                    DownloadJson().downloadJsonData(1)
+                    DownloadJson().downloadJsonData(currentPage)
                 }
-                CardView.text = cards.firstOrNull()?.name ?: "No cards found."
+
+                if (cards.isEmpty()) {
+                    currentPage = 1
+                    val firstPageCards = withContext(Dispatchers.IO) {
+                        DownloadJson().downloadJsonData(currentPage)
+                    }
+                    Log.e("LoadCardsEmpty", "page $currentPage")
+                    showCards(firstPageCards)
+                } else {
+                    Log.e("LoadCardsNotEmpty", "page $currentPage")
+                    showCards(cards)
+                }
+
+                currentPage++
+                loadCardsButton.isEnabled = true
             }
 
 
+        }
+    }
 
-            loadCardsButton.isEnabled = true
+    private fun showCards(cards: List<Card>) {
+        if (cards.isNotEmpty()) {
+            val cardNames = cards.joinToString(separator = "\n") { it.name }
+            CardView.text = cardNames
+        } else {
+            CardView.text = "No cards found"
         }
     }
 }

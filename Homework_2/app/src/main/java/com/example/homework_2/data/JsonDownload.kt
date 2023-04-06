@@ -8,7 +8,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class DownloadJson {
-    public suspend fun downloadJsonData(page: Int): List<Card> = withContext(Dispatchers.IO) {
+    public suspend fun downloadJsonData(page: Int = 1): List<Card> = withContext(Dispatchers.IO) {
         val url = URL("https://api.magicthegathering.io/v1/cards?page=$page")
         val connection = url.openConnection() as HttpURLConnection
         connection.requestMethod = "GET"
