@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">News List</string>
+    <string name="id">ID:</string>
+    <string name="title">Title:</string>
+    <string name="description">Description:</string>
+    <string name="imageurl">ImageUrl:</string>
+    <string name="author">Author:</string>
+    <string name="publicationDate">PublicationDate:</string>
+    <string name="fullArticleLink">FullArticleLink:</string>
+    <string name="keywords">Keywords:</string>
+    />
+</resources>

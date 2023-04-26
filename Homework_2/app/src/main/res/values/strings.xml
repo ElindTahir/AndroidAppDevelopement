@@ -4,6 +4,6 @@
     <string name="textview">TextView</string>
     <string name="textview2">Textview</string>
     <string name="Error">Error loading cards</string>
-    <string name="NoCardsFound">No cards found</string>
+    <string name="NoCardsFound">No cards found! Please try again!</string>
     <string name="Loading">loading...</string>
 </resources>
