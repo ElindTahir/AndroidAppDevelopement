@@ -11,9 +11,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class MainActivity : AppCompatActivity() {
 
-    //Todo: change unique identifier on details page
-
-
     private lateinit var adapter: RecyclerAdapter
     private lateinit var viewModel: NewsListViewModel
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout

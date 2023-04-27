@@ -2,6 +2,7 @@ package com.example.homework_3
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.widget.TextView
 
 class DetailsActivity : AppCompatActivity() {
@@ -24,7 +25,7 @@ class DetailsActivity : AppCompatActivity() {
 
         idTextView.text = newsItem.id.toString()
         titleTextView.text = newsItem.title
-        descriptionTextView.text = newsItem.description
+        descriptionTextView.text = Html.fromHtml(newsItem.description)
         imageUrlTextView.text = newsItem.imageUrl
         authorTextView.text = newsItem.author
         publicationDateTextView.text = newsItem.publicationDate

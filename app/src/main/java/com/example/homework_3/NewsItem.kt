@@ -10,19 +10,19 @@ data class NewsItem(
     val publicationDate: String?,
     val fullArticleLink: String?,
     val keywords: List<String>,
-    val id: Int
+    val id: String
 ) : Serializable {
     companion object {
         fun fromRssItem(rssItem: RssItem): NewsItem {
             return NewsItem(
+                id = rssItem.guid,
                 title = rssItem.title,
                 description = rssItem.description,
                 imageUrl = rssItem.imageUrl,
                 author = rssItem.author,
                 publicationDate = rssItem.publicationDate,
                 fullArticleLink = rssItem.fullArticleLink,
-                keywords = rssItem.keywords?.split(",") ?: emptyList(),
-                id = 1
+                keywords = rssItem.keywords?.split(",") ?: emptyList()
             )
         }
     }

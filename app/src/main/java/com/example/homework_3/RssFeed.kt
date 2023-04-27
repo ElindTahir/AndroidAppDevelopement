@@ -26,6 +26,10 @@ data class RssChannel @JvmOverloads constructor(
 @Root(name = "item", strict = false)
 data class RssItem @JvmOverloads constructor(
 
+    @field:Element(name = "guid")
+    @param:Element(name = "guid")
+    val guid: String = "",
+
     @field:Element(name = "title")
     @param:Element(name = "title")
     val title: String = "",
