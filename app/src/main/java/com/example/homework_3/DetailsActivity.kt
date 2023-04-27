@@ -30,6 +30,7 @@ class DetailsActivity : AppCompatActivity() {
         authorTextView.text = newsItem.author
         publicationDateTextView.text = newsItem.publicationDate
         fullArticleLinkTextView.text = newsItem.fullArticleLink
-        keywordsTextView.text = newsItem.keywords.toString()
+        //fix for empty keywords []
+        keywordsTextView.text = newsItem.keywords?.joinToString(", ") ?: ""
     }
 }

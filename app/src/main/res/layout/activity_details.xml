@@ -68,5 +68,7 @@
             android:text="@string/keywords"
             android:textAppearance="?attr/textAppearanceBody1" />
 
+
     </LinearLayout>
+
 </ScrollView>

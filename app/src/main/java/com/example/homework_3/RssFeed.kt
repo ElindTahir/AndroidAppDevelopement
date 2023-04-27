@@ -1,5 +1,6 @@
 package com.example.homework_3
 
+import org.simpleframework.xml.Attribute
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.ElementList
 import org.simpleframework.xml.Root
@@ -40,10 +41,10 @@ data class RssItem @JvmOverloads constructor(
 
     @field:Element(name = "media:content", required = false)
     @param:Element(name = "media:content", required = false)
-    val imageUrl: String? = null,
+    val imageUrl: RssMediaContent? = null,
 
-    @field:Element(name = "dc:creator", required = false)
-    @param:Element(name = "dc:creator", required = false)
+    @field:Element(name = "creator", required = false)
+    @param:Element(name = "creator", required = false)
     val author: String? = null,
 
     @field:Element(name = "pubDate", required = false)
@@ -54,10 +55,20 @@ data class RssItem @JvmOverloads constructor(
     @param:Element(name = "link", required = false)
     val fullArticleLink: String? = null,
 
-    @field:Element(name = "media:keywords", required = false)
-    @param:Element(name = "media:keywords", required = false)
-    val keywords: String? = null
+    //ElementList because keywords field is list of strings
+    @field:ElementList(name = "category", entry = "category", inline = true, required = false)
+    @param:ElementList(name = "category", entry = "category", inline = true, required = false)
+    val keywords: List<String> = emptyList(),
 
+    ) {
+    val imageUrlString: String? // Adding a property to RssItem to get the imageUrl string
+        get() = imageUrl?.url
+}
+//solve error getting width height not url
+data class RssMediaContent(
+    @field:Attribute(name = "url")
+    @param:Attribute(name = "url")
+    val url: String
 )
 
 fun parseDate(dateString: String?): Date? {

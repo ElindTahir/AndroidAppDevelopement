@@ -32,7 +32,7 @@ class NewsListViewModel : ViewModel() {
             val rssFeed = response.body()
 
             if (rssFeed != null) {
-                val sortedItems = rssFeed.channel.items.sortedByDescending { it.publicationDate }
+                val sortedItems = rssFeed.channel.items.sortedByDescending { parseDate(it.publicationDate)?.time ?: 0 }
                 val mappedItems = sortedItems.map { NewsItem.fromRssItem(it) }
                 newsItems.postValue(mappedItems)
             }

@@ -8,5 +8,6 @@
     <string name="publicationDate">PublicationDate:</string>
     <string name="fullArticleLink">FullArticleLink:</string>
     <string name="keywords">Keywords:</string>
+    <string name="reload_data">Reload Data</string>
     />
 </resources>

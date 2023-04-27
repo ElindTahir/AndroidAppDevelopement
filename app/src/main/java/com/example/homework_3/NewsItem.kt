@@ -14,15 +14,16 @@ data class NewsItem(
 ) : Serializable {
     companion object {
         fun fromRssItem(rssItem: RssItem): NewsItem {
+
             return NewsItem(
                 id = rssItem.guid,
                 title = rssItem.title,
                 description = rssItem.description,
-                imageUrl = rssItem.imageUrl,
+                imageUrl = rssItem.imageUrl?.url,
                 author = rssItem.author,
                 publicationDate = rssItem.publicationDate,
                 fullArticleLink = rssItem.fullArticleLink,
-                keywords = rssItem.keywords?.split(",") ?: emptyList()
+                keywords = rssItem.keywords?.toString()?.split(",") ?: emptyList(),
             )
         }
     }

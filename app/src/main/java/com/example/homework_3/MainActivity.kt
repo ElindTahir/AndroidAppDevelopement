@@ -3,6 +3,7 @@ package com.example.homework_3
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: RecyclerAdapter
     private lateinit var viewModel: NewsListViewModel
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var reloadButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,13 @@ class MainActivity : AppCompatActivity() {
         swipeRefreshLayout.setOnRefreshListener {
             viewModel.fetchNewsItems()
             swipeRefreshLayout.isRefreshing = false
+        }
+
+        //Reload
+        reloadButton = findViewById(R.id.reload_button)
+
+        reloadButton.setOnClickListener {
+            viewModel.refreshNewsItems()
         }
 
         //Fetch news items initially
