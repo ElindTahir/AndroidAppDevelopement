@@ -83,7 +83,7 @@ class RssParser {
         var author: String? = null
         var description: String? = null
         var imgString: String? = null
-        var publishedOn: Date? = null
+        var publishedOn: String? = null
         val keywords: MutableSet<String> = HashSet()
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
@@ -98,13 +98,7 @@ class RssParser {
                         keywords.add(keyword)
                 }
                 "link" -> link = readBasicTag(parser, "link")?.trim()
-                "pubDate" -> publishedOn =
-                        SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US).parse(
-                            readBasicTag(
-                                parser,
-                                "pubDate"
-                            ) ?: ""
-                        )
+                "pubDate" -> publishedOn = readBasicTag(parser, "pubDate")?.trim()
                 "dc:creator" -> author = readBasicTag(parser, "dc:creator")?.trim()
                 "description" -> description = readBasicTag(parser, "description")?.trim()
                 "media:content" -> {
@@ -120,7 +114,7 @@ class RssParser {
             NewsItem(
                 id, title,
                 link, description, imgString, author,
-                publishedOn, keywords)
+                publishedOn, keywords.toMutableList())
     }
 
     @Throws(IOException::class, XmlPullParserException::class)

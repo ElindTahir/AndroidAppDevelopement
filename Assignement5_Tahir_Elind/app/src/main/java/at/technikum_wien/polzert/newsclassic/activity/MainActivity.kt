@@ -12,15 +12,35 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import at.technikum_wien.polzert.newsclassic.NewsClassicApplication
 import at.technikum_wien.polzert.newsclassic.R
 import at.technikum_wien.polzert.newsclassic.adapter.ListAdapter
+import at.technikum_wien.polzert.newsclassic.data.download.NewsDownloader
+import at.technikum_wien.polzert.newsclassic.data.parser.RssParser
+import at.technikum_wien.polzert.newsclassic.repo.NewsItemRepo
 import at.technikum_wien.polzert.newsclassic.settings.SettingsActivity
 import at.technikum_wien.polzert.newsclassic.viewmodels.NewsListViewModel
+import at.technikum_wien.polzert.newsclassic.viewmodels.NewsListViewModelProviderFactory
 
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
-    private val viewModel by viewModels<NewsListViewModel>()
+    //private val viewModel by viewModels<NewsListViewModel>()
     private var adapter : ListAdapter? = null
+
+    private val newsListViewModel: NewsListViewModel by viewModels(
+        factoryProducer =
+        {
+            NewsListViewModelProviderFactory(createNewsClassicRepository())
+        }
+    )
+
+    private fun createNewsClassicRepository(): NewsItemRepo {
+        return NewsItemRepo(
+            (application as NewsClassicApplication).database.newsItemDao(),
+            NewsDownloader(),
+            RssParser()
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,24 +59,25 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
         val errorTextView = findViewById<TextView>(R.id.tv_error)
 
-        viewModel.error.observe(this) {
+        newsListViewModel.error.observe(this) {
             errorTextView.visibility = if (it) View.VISIBLE else View.GONE
         }
 
-        viewModel.newsItems.observe(this) {
+        newsListViewModel.allNewsItems.observe(this) {
             adapter?.items = it
         }
 
-        viewModel.busy.observe(this) {
+        newsListViewModel.busy.observe(this) {
         }
 
-        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val sharedPreferences: SharedPreferences =
+            PreferenceManager.getDefaultSharedPreferences(this)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val item = menu.findItem(R.id.action_reload)
-        item.isEnabled = viewModel.busy.value != true
+        item.isEnabled = newsListViewModel.busy.value != true
         return true
     }
 
@@ -82,7 +103,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_reload -> {
-                viewModel.reload()
+                newsListViewModel.refreshViewModel(this)
                 true
             }
             R.id.action_settings -> {
@@ -96,7 +117,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String) {
         if (key == getString(R.string.settings_news_url_key)) {
-            viewModel.reload()
+            newsListViewModel.refreshViewModel(this)
         } else if (key == getString(R.string.settings_image_display_key)) {
             adapter?.reload(getImageDisplay())
         }

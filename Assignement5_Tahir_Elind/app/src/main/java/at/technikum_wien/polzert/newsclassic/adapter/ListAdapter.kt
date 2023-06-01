@@ -43,7 +43,7 @@ class ListAdapter(items: List<NewsItem> = listOf(), var showImages : Boolean = f
         fun bind(index: Int) {
             titleTextView.text = items[index].title
             authorTextView.text = items[index].author
-            publicationDateTextView.text = dateFormat.format(items[index].publicationDate)
+            publicationDateTextView.text = items[index].publicationDate
             if (!showImages) {
                 itemImageView.visibility = View.INVISIBLE
                 itemProgressBar.visibility = View.INVISIBLE
